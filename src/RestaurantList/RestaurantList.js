@@ -1,18 +1,33 @@
-import React, { Component } from 'react';
-import RestaurantListEntry from '../RestaurantListEntry';
-import firebase from '../firebase';
-// import './RestaurantList.css';
+import React from 'react';
+import PropTypes from 'prop-types';
+import RestaurantListEntry from '../RestaurantListEntry/RestaurantListEntry';
+import './RestaurantList.css';
 
-class RestaurantList extends Component {
-  render() {
-    console.log(this.state);
-    return (
-      <div className="App">
-        <header className="App-header" />
-        {/* iterate over props.restaurants */}
-      </div>
-    );
-  }
-}
+const RestaurantList = (props) => {
+  const { restaurants } = props;
+
+  return (
+    <div className="App">
+      {
+        Object.keys(restaurants)
+          .map(key => (
+            <RestaurantListEntry
+              key={key}
+              rid={key}
+              restaurant={restaurants[key]}
+            />
+          ))
+      }
+    </div>
+  );
+};
+
+RestaurantList.defaultProps = {
+  restaurants: {},
+};
+
+RestaurantList.propTypes = {
+  restaurants: PropTypes.object,
+};
 
 export default RestaurantList;

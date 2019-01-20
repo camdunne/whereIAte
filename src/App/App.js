@@ -1,33 +1,31 @@
 import React, { Component } from 'react';
-import firebase from '../firebase';
 import './App.css';
+import Login from '../Login/Login';
+import Main from '../Main/Main';
 
 class App extends Component {
   state = {
     isLoggedIn: false,
-    user: null,
-    collections: null,
-
-  };
-
-  componentDidMount() {
-    const userId = '1';
-    firebase.database().ref(`/users/${userId}`).once('value').then((snapshot) => {
-      this.setState({ user: snapshot.val() });
-    });
-    firebase.database().ref(`/collections/uid${userId}`).once('value').then((snapshot) => {
-      this.setState({ collections: snapshot.val() });
-    });
   }
 
+  updateAppState = this.updateAppState.bind(this)
+
+  updateAppState(props) {
+    this.setState(props);
+  }
 
   render() {
-    console.log(this.state);
+    const { isLoggedIn } = this.state;
+    if (isLoggedIn) {
+      return (
+        <div className="App">
+          <Main />
+        </div>
+      );
+    }
     return (
       <div className="App">
-        <header className="App-header" />
-        CollectionList
-
+        <Login updateAppState={this.updateAppState} />
       </div>
     );
   }

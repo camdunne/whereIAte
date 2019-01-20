@@ -1,43 +1,95 @@
 import React, { Component } from 'react';
-import firebase from '../firebase';
+import PropTypes from 'prop-types';
+import { auth } from '../firebase';
 import './Login.css';
 
+
 class Login extends Component {
-  state = {
-    isLoggedIn: false,
-  };
+  state = {}
 
-  onClickHandler = this.onClickHandler.bind(this);
+  signUp = this.signUp.bind(this)
 
-  componentDidMount() {
-    this.getUserId();
-    console.log(firebase.database().ref('/users/'));
-    // .ref().then(console.log);
-    // return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-    //   var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-    //   // ...
-    // });
+  logIn = this.logIn.bind(this)
+
+  handleChange = this.handleChange.bind(this)
+
+  signUp() {
+    const { email, password } = this.state;
+    const { updateAppState } = this.props;
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((value) => {
+        console.log(value);
+        updateAppState({
+          isLoggedIn: true,
+          uid: value.user.uid,
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        this.setState({ errorMessage });
+      });
   }
 
-  onClickHandler() {
-    this.setState(prevState => ({ count: prevState.count + 1 }));
+  logIn(e) {
+    e.preventDefault();
+    const { email, password } = this.state;
+    const { updateAppState } = this.props;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then((value) => {
+        console.log(value.user);
+        updateAppState({
+          isLoggedIn: true,
+          uid: value.user.uid,
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        this.setState({ errorMessage });
+        if (errorCode === 'auth/user-not-found') {
+          this.signUp();
+        }
+      });
   }
 
-  getUserId() {
-    const userId = firebase.auth().currentUser.uid;
-    this.state.userId = userId;
+  handleChange(e) {
+    this.setState({ [e.target.className]: e.target.value });
   }
-
 
   render() {
-    const { isLoggedIn } = this.state;
+    const { errorMessage } = this.state;
     return (
-      <div className="App">
-        <header className="App-header" />
-
+      <div className="Login">
+        <header className="Login-header" />
+        <form onSubmit={this.logIn}>
+          <input
+            className="email"
+            type="text"
+            onChange={this.handleChange}
+          />
+          <input
+            className="password"
+            type="text"
+            onChange={this.handleChange}
+          />
+          <input
+            type="submit"
+            className="submit"
+          />
+        </form>
+        <div>{errorMessage}</div>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  updateAppState: PropTypes.func.isRequired,
+};
 
 export default Login;
