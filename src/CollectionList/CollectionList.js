@@ -19,6 +19,9 @@ const CollectionList = (props) => {
               </div>
             ))
         }
+        <Button 
+          onClick={() => {}}
+        />
       </div>
     );
   }

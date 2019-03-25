@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { auth } from '../firebase';
-import './Login.css';
+import './Signup.css';
 import Button from '../common/Button';
 
 
-class Login extends Component {
+class SignUp extends Component {
   state = {
     errorMessage: null
   }
 
-  logIn = this.logIn.bind(this)
+  signUp = this.signUp.bind(this)
 
   handleChange = this.handleChange.bind(this)
 
-  logIn(e) {
+  signUp(e) {
     e.preventDefault();
     const { email, password } = this.state;
     const { updateAppState } = this.props;
 
-    auth.signInWithEmailAndPassword(email, password)
+    auth.createUserWithEmailAndPassword(email, password)
       .then((value) => {
-        console.log(value.user);
+        console.log(value);
         updateAppState({
           isLoggedIn: true,
           uid: value.user.uid,
@@ -30,7 +30,6 @@ class Login extends Component {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
         console.log(errorCode, errorMessage);
         this.setState({ errorMessage });
       });
@@ -40,16 +39,15 @@ class Login extends Component {
     this.setState({ [e.target.className]: e.target.value });
   }
 
-
   render() {
     const { errorMessage } = this.state;
     const { updateAppState } = this.props;
-  
+
     return (
-      <div className="Login">
-        <header className="Login-header" />
-        Account Login
-        <form onSubmit={this.logIn}>
+      <div className="SignUp">
+        <header className="SignUp-header" />
+        Account SignUp
+        <form onSubmit={this.signUp}>
           <input
             className="email"
             type="text"
@@ -64,17 +62,17 @@ class Login extends Component {
             type="submit"
             className="submit"
           >
-            Log In
+            Sign Up
           </Button>
         </form>
         <div>{errorMessage}</div>
         <div>
-          Do you need an Account?
+          Already have an Account?
           <Button
             type="click"
-            onClick={ () => { updateAppState({logIn: false}) } }
+            onClick={ () => { updateAppState({logIn: true}) } }
           >
-            Sign Up
+            LogIn
           </Button>
         </div>
       </div>
@@ -83,8 +81,8 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+SignUp.propTypes = {
   updateAppState: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default SignUp;

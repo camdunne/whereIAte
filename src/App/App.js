@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import Login from '../Login/Login';
+import Signup from '../Signup/Signup';
 import Main from '../Main/Main';
 
 class App extends Component {
   state = {
+    logIn: true,
     isLoggedIn: false,
   }
 
@@ -15,7 +17,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.state;
+    const { logIn, isLoggedIn } = this.state;
     if (isLoggedIn) {
       return (
         <div className="App">
@@ -23,11 +25,18 @@ class App extends Component {
         </div>
       );
     }
+    if (logIn) {
+      return (
+        <div className="App">
+          <Login updateAppState={this.updateAppState} />
+        </div>
+      );
+    }
     return (
       <div className="App">
-        <Login updateAppState={this.updateAppState} />
-      </div>
-    );
+        <Signup updateAppState={this.updateAppState} />
+      </div>  
+    )
   }
 }
 
