@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import RestaurantList from '../RestaurantList/RestaurantList';
+
 import './CollectionList.css';
 
 const CollectionList = (props) => {
@@ -19,9 +21,11 @@ const CollectionList = (props) => {
               </div>
             ))
         }
-        <Button 
+        <Button
           onClick={() => {}}
-        />
+        >
+        Add Collection
+        </Button>
       </div>
     );
   }

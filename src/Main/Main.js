@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { firebase, auth } from '../firebase';
-import './Main.css';
 import CollectionList from '../CollectionList/CollectionList';
 
 class Main extends Component {

@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 import { Welcome } from '@storybook/react/demo';
-import Button from '../common/Button';
+import Button from '@material-ui/core/Button';
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 
