@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 import Main from '../Main/Main';
-import NavBar from '../common/NavBar';
+import NavBar from '../NavBar/NavBar';
 
 class App extends Component {
   state = {
